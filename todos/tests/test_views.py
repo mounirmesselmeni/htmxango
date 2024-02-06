@@ -14,7 +14,7 @@ class TodoItemListViewTests(TestCase):
 
     def test_get_with_htmx(self):
         response = self.client.get(
-            reverse("todos:todoitem-list"), HTTP_HX_REQUEST="true"
+            reverse("todos:todoitem-list"), headers={"hx-request": "true"}
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No todo items found.")
@@ -30,7 +30,7 @@ class TodoItemCreateViewTests(TestCase):
         response = self.client.post(
             reverse("todos:todoitem-create"),
             {"description": "Test description"},
-            HTTP_HX_REQUEST="true",
+            headers={"hx-request": "true"},
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "form")
@@ -41,7 +41,7 @@ class TodoItemCreateViewTests(TestCase):
         response = self.client.post(
             reverse("todos:todoitem-create"),
             {"title": "Test description"},
-            HTTP_HX_REQUEST="true",
+            headers={"hx-request": "true"},
         )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse("todos:todoitem-list"))
@@ -62,7 +62,7 @@ class TodoItemDeleteViewTests(TestCase):
     def test_post(self):
         response = self.client.post(
             reverse("todos:todoitem-delete", args=[self.item.id]),
-            HTTP_HX_REQUEST="true",
+            headers={"hx-request": "true"},
         )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse("todos:todoitem-list"))
@@ -83,7 +83,7 @@ class TodoMarkCompleteTests(TestCase):
     def test_post(self):
         response = self.client.post(
             reverse("todos:todoitem-mark-complete", args=[self.item.id]),
-            HTTP_HX_REQUEST="true",
+            headers={"hx-request": "true"},
         )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse("todos:todoitem-list"))

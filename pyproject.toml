@@ -24,9 +24,6 @@ ipdb = "^0.13.13"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.black]
-line-length = 88
-
 [tool.djlint]
 blank_line_after_tag = "load,extends,include"
 extend_exclude = "generated_docs"
@@ -34,3 +31,94 @@ format_css = false
 profile = "django"
 use_gitignore = true
 ignore = "H025,H021"
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+skip-string-normalization = true
+exclude = '''
+/(
+  \.venv
+  | migrations
+  | \.cache
+  | \.pre-commit-cache
+)/
+'''
+
+[tool.isort]
+profile = "black"
+py_version = 311
+multi_line_output = 3
+line_length = 88
+default_section = "THIRDPARTY"
+skip = ["migrations", ".venv", ".pre-commit-cache"]
+
+[tool.ruff]
+# Same as Black.
+line-length = 88
+# Assume Python 3.11.
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "F",
+    "E",
+    "B",
+    "C4",
+    "EXE",
+    "ISC",
+    "ICN",
+    "INP",
+    "PIE",
+    "SIM",
+    "W",
+    "T20",
+    "UP",
+    "T10",
+    "G",
+    "DJ001",
+    "DJ008",
+    "C90",
+    "ERA",
+]
+# Later on might be useful C/C90 (Compexity), ERA (Found commented-out code), FBT
+ignore = ["B008", "SIM102"]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = [
+    "F",
+    "E",
+    "B",
+    "C4",
+    "EXE",
+    "ISC",
+    "ICN",
+    "INP",
+    "PIE",
+    "SIM",
+    "W",
+    "T20",
+    "UP",
+]
+unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".pre-commit-cache",
+    ".ruff_cache",
+    ".tox",
+    ".venv",
+    "venv",
+    "docs",
+    "__pycache",
+    "**/migrations/*",
+]
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10

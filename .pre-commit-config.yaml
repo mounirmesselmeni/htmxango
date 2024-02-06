@@ -1,0 +1,62 @@
+# Make sure pre-commit uses the same python version as we do
+default_language_version:
+  # default language version for each language
+  python: python3.10
+
+repos:
+  # Common builtin pre-commit hooks
+  # See https://pre-commit.com/hooks.html for more hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      # simply checks whether the files parse as valid python.
+      - id: check-ast
+      # checks for files that would conflict in case-insensitive filesystem.
+      - id: check-case-conflict
+      # checks for files that contain merge conflict strings.
+      - id: check-merge-conflict
+      # checks for debugger imports and py37+ `breakpoint()` calls in python source.
+      - id: debug-statements
+      # ensures that a file is either empty, or ends with one newline.
+      - id: end-of-file-fixer
+      # trims trailing whitespace.
+      - id: trailing-whitespace
+
+  - repo: https://github.com/psf/black
+    rev: 24.1.1
+    hooks:
+      - id: black
+        language_version: python3
+        exclude: ^(.+)\/migrations\/(.+)$
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    # Ruff version.
+    rev: "v0.2.1"
+    hooks:
+      - id: ruff
+
+  # Make sure we use new features of python and avoid old deprecated practices
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.0
+    hooks:
+      - id: pyupgrade
+        args: ["--py3-plus", "--py311-plus"]
+
+  # Similar to pyupgrade but fixes Django deprecation and new syntax
+  - repo: https://github.com/adamchainz/django-upgrade
+    rev: "1.15.0"
+    hooks:
+      - id: django-upgrade
+        args: [--target-version, "5.0"]
+
+  # run isort to enforce import organization
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/djlint/djLint
+    rev: v1.34.1
+    hooks:
+      - id: djlint-reformat-django
+      - id: djlint-django
