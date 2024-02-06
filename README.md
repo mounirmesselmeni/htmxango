@@ -28,7 +28,7 @@ We rely on three major projects here:
 - [django-htmx](https://github.com/adamchainz/django-htmx) A Django app to make using htmx easier.
 - [django-render-block](https://github.com/clokep/django-render-block) A Django app to allow rendering of individual blocks from a template and avoid splitting templates into partials and overuse include tags. Keep in mind that include come with a cost of performance specially if you have a lot of them e.g in a loop.
 
-Other tools like Boostrap5, crispy-forms and django are used to make the example more complete.
+Other tools like Boostrap5 and crispy-forms are used to make the example more complete.
 
 ## Using CBVs
 
