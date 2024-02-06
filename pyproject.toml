@@ -19,6 +19,7 @@ black = "^24.1.1"
 djlint = "^1.34.1"
 ipython = "^8.21.0"
 ipdb = "^0.13.13"
+pre-commit = "^3.6.0"
 
 [build-system]
 requires = ["poetry-core"]
