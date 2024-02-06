@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  create:
+    tags:
+      - "*" # run on all tags
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+        django-version: ["5.0"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache Poetry virtual environment
+        id: poetry-cache
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: ${{ runner.os }}-${{ matrix.python-version }}-poetry-v1-${{ hashFiles('poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-v1-
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Set poetry to use virtualenvs.in-project true
+        run: |
+          poetry config virtualenvs.in-project true
+      - name: Install dependencies
+        run: |
+          poetry install --with dev
+      - name: Cache pre-commit hooks
+        id: pre-commit-cache
+        uses: actions/cache@v2
+        with:
+          path: $HOME/.cache/pre-commit
+          key: ${{ runner.os }}-pre-commit-hooks-${{ hashFiles('**/.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pre-commit-hooks-
+      - name: Run pre-commit
+        run: |
+          poetry run pre-commit run --all-files
+      - name: Run tests and coverage
+        run: |
+          poetry run python manage.py test
