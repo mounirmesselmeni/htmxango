@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="row align-items-center">
+        <div class="row">
+            <h1>Todo Item</h1>
+            <div class="spinner-border htmx-indicator" role="status" id="spinner">
+                <span class="sr-only">Loading...</span>
+            </div>
+            {% block form_block %}
+                <form method="post"
+                      hx-post="{% url 'todos:todoitem-create' %}"
+                      hx-swap="innerHTML"
+                      hx-trigger="submit"
+                      hx-target="#todo-list"
+                      hx-indicator="#spinner">
+                    {% crispy form %}
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            {% endblock form_block %}
+        </div>
+        <div class="row">
+            <h1>Todo List</h1>
+            <div id="todo-list">
+                {% block object_list_block %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Completed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for todo in todoitems %}
+                                <tr>
+                                    <td>{{ todo.title }}</td>
+                                    <td>
+                                        {% if todo.completed_on %}
+                                            <badge class="badge bg-success">Completed</badge>
+                                        {% else %}
+                                            <button hx-post="{% url 'todos:todoitem-mark-complete' todo.id %}"
+                                                    hx-swap="outerHTML"
+                                                    hx-target="closest table"
+                                                    hx-trigger="click"
+                                                    class="btn btn-primary btn-sm">Complete</button>
+                                        {% endif %}
+                                        <button hx-post="{% url 'todos:todoitem-delete' todo.id %}"
+                                                hx-confirm="Are you sure?"
+                                                hx-swap="outerHTML"
+                                                hx-target="closest table"
+                                                hx-trigger="click"
+                                                class="btn btn-danger btn-sm">Delete</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endblock object_list_block %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

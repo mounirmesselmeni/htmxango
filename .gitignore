@@ -1,0 +1,40 @@
+__pycache__/
+.mypy_cache/
+*.lnk
+*.prj
+*.swp
+*.tmp
+.DS_Store
+db.sqlite3
+.coverage
+cover/*
+.env.local
+*.mo
+*.pyc
+*.pyo
+*.ipynb
+.ipynb_checkpoints
+.coverage
+.coverage.*
+media/
+########## OS FILES
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+*~
+########## END OS FILES
+
+########## Docker
+.ipython
+.bash_history
+.bash_aliases
+########## End Docker
+
+temp/*
+tmp/*
+
+########## Pre-commit env
+# This will avoid re-fetching of pre-commit env each time
+.pre-commit-cache
+########## end pre-commit
