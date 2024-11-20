@@ -6,10 +6,11 @@ The challenge here is to use CBVs and satisfy the need of htmx partial html rend
 ## How to run
 
 1. Clone the repository
-2. Install [Poetry](https://python-poetry.org/docs/)
-3. Run `poetry install`
-4. Run `poetry run python manage.py migrate`
-5. Run `poetry run python manage.py runserver`
+2. Install [uv](https://docs.astral.sh/uv/)
+3. Run `uv python install`
+4. Run `uv sync`
+5. Run `uv run python manage.py migrate`
+6. Run `uv run python manage.py runserver`
 
 ## How to use
 
